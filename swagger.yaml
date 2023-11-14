@@ -5,6 +5,7 @@ info:
   version: "1.0.5"
   title: "Content Management API"
 host: "1yonz7p1x8.execute-api.ap-southeast-1.amazonaws.com/dev"
+basePath: ""
 tags:
 - name: "upload"
   description: "Upload image securely"
