@@ -10,7 +10,7 @@ tags:
 - name: "upload"
   description: "Upload image securely"
 - name: "post"
-  description: "Everything about Post creation and retrieval"
+  description: "Create a Post and retrieve all Posts with pagination"
 - name: "comment"
   description: "Add and delete Comment on a Post"
 paths:
@@ -82,11 +82,29 @@ paths:
       summary: "Retrieve all posts"
       description: ""
       operationId: "getPosts"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "The maximum number of posts to return."
+        required: false
+        schema:
+          type: "integer"
+          default: 10
+      - name: "page_token"
+        in: "query"
+        description: "Token for paginating through results."
+        required: false
+        schema:
+          type: "string"
       responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Post"
         400:
           description: "Invalid input"
   /comments:
