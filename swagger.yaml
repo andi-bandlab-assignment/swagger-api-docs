@@ -20,7 +20,7 @@ paths:
       - "upload"
       summary: "generate URL to securely upload an image"
       description: ""
-      operationId: "uploadFile"
+      operationId: "generatedURL"
       consumes:
       - "application/json"
       produces:
@@ -35,138 +35,108 @@ paths:
       responses:
         400:
           description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+  /{presigned_url}:
     put:
       tags:
-      - "pet"
-      summary: "Update an existing pet"
+      - "upload"
+      summary: "upload image via presigned URL generated in /upload"
       description: ""
-      operationId: "updatePet"
+      operationId: "uploadFile"
       consumes:
-      - "application/json"
-      - "application/xml"
+      - "multipart/form-data"
       produces:
       - "application/json"
-      - "application/xml"
+      parameters:
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        400:
+          description: "Invalid input"
+  /posts:
+    post:
+      tags:
+      - "post"
+      summary: "Create a new post"
+      description: ""
+      operationId: "addPost"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
       - in: "body"
         name: "body"
-        description: "Pet object that needs to be added to the store"
+        description: "Add Post object"
         required: true
         schema:
-          $ref: "#/definitions/Pet"
+          $ref: "#/definitions/Post"
       responses:
         400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-        405:
-          description: "Validation exception"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByStatus:
+          description: "Invalid input"
     get:
       tags:
-      - "pet"
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
+      - "post"
+      summary: "Retrieve all posts"
+      description: ""
+      operationId: "getPosts"
+      consumes:
+      - "application/json"
       produces:
       - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-          default: "available"
-        collectionFormat: "multi"
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
+        400:
+          description: "Invalid input"
+  /comments:
+    post:
+      tags:
+      - "comment"
+      summary: "Add comment to a post"
+      description: ""
+      operationId: "addComment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Add Comment object"
+        required: true
+        schema:
+          $ref: "#/definitions/Comment"
+      responses:
         400:
           description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByTags:
-    get:
+  /comments/{comment_id}/creators/{creator_id}:
+    delete:
       tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Multiple tags can be provided with comma separated strings. Use\
-        \ tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
+      - "comment"
+      summary: "Delete a comment"
+      description: ""
+      operationId: "deleteComment"
+      consumes:
+      - "application/json"
       produces:
       - "application/json"
-      - "application/xml"
       parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
+      - name: "comment_id"
+        in: "path"
+        description: "comment identifier"
         required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
+        type: "string"
+        example: "f7b1cf91-0dcd-4f32-80f1-6bf6658d67e0"
+      - name: "creator_id"
+        in: "path"
+        description: "creator identifier"
+        required: true
+        type: "string"
+        example: "user1"
       responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
         400:
-          description: "Invalid tag value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
+          description: "Invalid status value"
 definitions:
   Pet:
     type: "object"
