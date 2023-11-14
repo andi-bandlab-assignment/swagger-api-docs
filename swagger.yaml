@@ -138,45 +138,6 @@ paths:
         400:
           description: "Invalid status value"
 definitions:
-  Pet:
-    type: "object"
-    required:
-    - "name"
-    - "photoUrls"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      category:
-        $ref: "#/definitions/Category"
-      name:
-        type: "string"
-        example: "doggie"
-      photoUrls:
-        type: "array"
-        xml:
-          wrapped: true
-        items:
-          type: "string"
-          xml:
-            name: "photoUrl"
-      tags:
-        type: "array"
-        xml:
-          wrapped: true
-        items:
-          xml:
-            name: "tag"
-          $ref: "#/definitions/Tag"
-      status:
-        type: "string"
-        description: "pet status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
-    xml:
-      name: "Pet"
   Upload:
     type: "object"
     required:
@@ -193,3 +154,34 @@ definitions:
       file_size:
         type: "integer"
         example: 1000
+  Post:
+    type: "object"
+    required:
+    - "image_path"
+    - "creator"
+    properties:
+      image_path:
+        type: "string"
+        example: "https://user-post-images.s3.amazonaws.com/resized/5a357247-75da-48c6-9408-259ea83a004c.jpeg?AWSAccessKeyId=ASIASILMZTP7KJAHWFIO"
+      caption:
+        type: "string"
+        example: "My First Post"
+      creator:
+        type: "string"
+        example: "user1"
+  Comment:
+    type: "object"
+    required:
+    - "post_id"
+    - "content"
+    - "creator"
+    properties:
+      post_id:
+        type: "string"
+        example: "cee5cee6-d489-4c2c-b447-f30e7f7243f3"
+      content:
+        type: "string"
+        example: "Awesome post"
+      creator:
+        type: "string"
+        example: "user2"
