@@ -4,8 +4,7 @@ info:
   description: ""
   version: "1.0.5"
   title: "Content Management API"
-
-host: "test.com/dev"
+host: "1yonz7p1x8.execute-api.ap-southeast-1.amazonaws.com/dev"
 basePath: "/v2"
 tags:
 - name: "upload"
@@ -14,7 +13,6 @@ tags:
   description: "Everything about Post creation and retrieval"
 - name: "comment"
   description: "Add and delete Comment on a Post"
-
 paths:
   /upload:
     post:
