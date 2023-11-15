@@ -72,8 +72,12 @@ paths:
         description: "Add Post object"
         required: true
         schema:
-          $ref: "#/definitions/PostRequest"
+          $ref: "#/definitions/CreatePostRequest"
       responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CreatePostsResponse"
         400:
           description: "Invalid input"
     get:
@@ -104,7 +108,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/PostResponse"
+              $ref: "#/definitions/RetrievePostsResponse"
         400:
           description: "Invalid input"
   /comments:
@@ -183,25 +187,44 @@ definitions:
       file_size:
         type: "integer"
         example: 1000
-  PostRequest:
+  CreatePostRequest:
     type: "object"
     required:
-    - "image_path"
+    - "image_id"
     - "creator"
     properties:
-      image_path:
+      image_id:
         type: "string"
-        example: "https://user-post-images.s3.amazonaws.com/resized/5a357247-75da-48c6-9408-259ea83a004c.jpeg?AWSAccessKeyId=ASIASILMZTP7KJAHWFIO"
+        example: "5a357247-75da-48c6-9408-259ea83a004c"
       caption:
         type: "string"
         example: "My First Post"
       creator:
         type: "string"
         example: "user1"
-  PostResponse:
+  CreatePostResponse:
     type: "object"
     properties:
-      image_path:
+      post_id:
+        type: "string"
+        example: "a9cb5a3c-8d0d-4a0b-9733-644e8fdbd25f"
+      caption:
+        type: "string"
+        example: "My First Post"
+      creator:
+        type: "string"
+        example: "user1"
+      image_url:
+        type: "string"
+        example: "https://user-post-images.s3.amazonaws.com/resized/5a357247-75da-48c6-9408-259ea83a004c.jpeg?AWSAccessKeyId=ASIASILMZTP7KJAHWFIO"
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2023-11-13 17:09:00.294058"
+  RetrievePostsResponse:
+    type: "object"
+    properties:
+      image_url:
         type: "string"
         example: "https://user-post-images.s3.amazonaws.com/resized/5a357247-75da-48c6-9408-259ea83a004c.jpeg?AWSAccessKeyId=ASIASILMZTP7KJAHWFIO"
       caption:
