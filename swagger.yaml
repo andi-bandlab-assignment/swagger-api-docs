@@ -72,7 +72,7 @@ paths:
         description: "Add Post object"
         required: true
         schema:
-          $ref: "#/definitions/Post"
+          $ref: "#/definitions/PostRequest"
       responses:
         400:
           description: "Invalid input"
@@ -104,7 +104,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Post"
+              $ref: "#/definitions/PostResponse"
         400:
           description: "Invalid input"
   /comments:
@@ -124,8 +124,12 @@ paths:
         description: "Add Comment object"
         required: true
         schema:
-          $ref: "#/definitions/Comment"
+          $ref: "#/definitions/CommentRequest"
       responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CommentResponse"
         400:
           description: "Invalid status value"
   /comments/{comment_id}/creators/{creator_id}:
@@ -153,6 +157,13 @@ paths:
         type: "string"
         example: "user1"
       responses:
+        200:
+          description: "successful operation"
+          type: "object"
+          properties:
+            deleted:
+              type: "boolean"
+              example: "True"
         400:
           description: "Invalid status value"
 definitions:
@@ -172,7 +183,7 @@ definitions:
       file_size:
         type: "integer"
         example: 1000
-  Post:
+  PostRequest:
     type: "object"
     required:
     - "image_path"
@@ -187,7 +198,44 @@ definitions:
       creator:
         type: "string"
         example: "user1"
-  Comment:
+  PostResponse:
+    type: "object"
+    properties:
+      image_path:
+        type: "string"
+        example: "https://user-post-images.s3.amazonaws.com/resized/5a357247-75da-48c6-9408-259ea83a004c.jpeg?AWSAccessKeyId=ASIASILMZTP7KJAHWFIO"
+      caption:
+        type: "string"
+        example: "Bandlab tech"
+      creator:
+        type: "string"
+        example: "user3"
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2023-11-13 17:09:00.294058"
+      comments:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            comment_id:
+              type: "string"
+              example: "ad532a63-7e56-480a-a40a-72e49643c13f"
+            content:
+              type: "string"
+              example: "awesome post"
+            created_at:
+              type: "string"
+              format: "date-time"
+              example: "2023-11-14 01:57:55.497507"
+            creator:
+              type: "string"
+              example: "user1"
+      post_id:
+        type: "string"
+        example: "40c32bf5-ac99-42f4-8bd2-0656ebcb05eb"
+  CommentRequest:
     type: "object"
     required:
     - "post_id"
@@ -199,7 +247,23 @@ definitions:
         example: "cee5cee6-d489-4c2c-b447-f30e7f7243f3"
       content:
         type: "string"
-        example: "Awesome post"
+        example: "Awesome"
       creator:
         type: "string"
-        example: "user2"
+        example: "user1"
+  CommentResponse:
+    type: "object"
+    properties:
+      comment_id:
+        type: "string"
+        example: "28baa1c8-9dd3-4e15-bd0f-58e60b48eddd"
+      content:
+        type: "string"
+        example: "Awesome"
+      created_at:
+        type: "string"
+        format: "date-time"
+        example: "2023-11-14 18:13:37.888643"
+      creator:
+        type: "string"
+        example: "user1"
